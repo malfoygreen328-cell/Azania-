@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Azania – Order Confirmation</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #043927;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.confirmation-container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+  max-width: 500px;
+  width: 100%;
+}
+
+h1 {
+  text-align: center;
+  color: #043927;
+}
+
+.order-summary {
+  margin-top: 20px;
+}
+
+.order-summary ul {
+  list-style: none;
+  padding: 0;
+}
+
+.order-summary li {
+  margin-bottom: 8px;
+}
+
+.home-btn {
+  display: block;
+  margin-top: 25px;
+  padding: 12px;
+  background: #043927;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.home-btn:hover {
+  background: #065f46;
+}
+</style>
+</head>
+
+<body>
+
+<div class="confirmation-container">
+  <h1>✅ Thank You for Your Order!</h1>
+  <p>Your order has been placed successfully.</p>
+
+  <p><strong>Order ID:</strong> <span id="order-id"></span></p>
+
+  <div class="order-summary">
+    <h2>Order Summary</h2>
+    <ul id="order-items"></ul>
+    <p><strong>Total: R<span id="order-total">0.00</span></strong></p>
+  </div>
+
+  <div class="shipping-info">
+    <h3>Shipping Address</h3>
+    <p id="shipping-address"></p>
+  </div>
+
+  <a href="Dashboard.html" class="home-btn">Return to Home</a>
+</div>
+
+<script>
+function loadOrder() {
+  const order = JSON.parse(localStorage.getItem("lastOrder"));
+
+  if (!order) {
+    alert("No recent order found.");
+    window.location.href = "Dashboard.html";
+    return;
+  }
+
+  document.getElementById("order-id").textContent = order._id || "N/A";
+
+  const orderList = document.getElementById("order-items");
+  const totalEl = document.getElementById("order-total");
+  const shippingEl = document.getElementById("shipping-address");
+
+  let total = 0;
+  orderList.innerHTML = "";
+
+  order.items.forEach(item => {
+    const li = document.createElement("li");
+    const itemTotal = item.price * item.quantity;
+    li.textContent = `${item.name} (x${item.quantity}) - R${itemTotal}`;
+    orderList.appendChild(li);
+    total += itemTotal;
+  });
+
+  totalEl.textContent = total.toFixed(2);
+  shippingEl.textContent = order.shippingAddress || "Not provided";
+}
+
+document.addEventListener("DOMContentLoaded", loadOrder);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Azania Checkout</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background: #043927;
+}
+
+.checkout-container {
+  max-width: 800px;
+  margin: auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+h1, h2 {
+  text-align: center;
+  color: #043927;
+}
+
+.billing-section input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.summary-section {
+  margin-top: 30px;
+}
+
+#order-summary {
+  list-style: none;
+  padding: 0;
+}
+
+button {
+  margin-top: 20px;
+  padding: 12px 30px;
+  font-size: 16px;
+  background: #043927;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<main class="checkout-container">
+
+<h1>Checkout</h1>
+
+<section class="billing-section">
+<h2>Shipping Information</h2>
+<form id="checkout-form">
+  <input type="text" id="fullName" placeholder="Full Name" required />
+  <input type="email" id="email" placeholder="Email" required />
+  <input type="text" id="address" placeholder="Address" required />
+  <input type="text" id="city" placeholder="City" required />
+  <input type="text" id="postal" placeholder="Postal Code" required />
+  <input type="text" id="country" placeholder="Country" required />
+</form>
+</section>
+
+<section class="summary-section">
+<h2>Order Summary</h2>
+<ul id="order-summary"></ul>
+<h3>Total: R<span id="order-total">0.00</span></h3>
+<button onclick="completeCheckout()">Place Order</button>
+</section>
+
+</main>
+
+<script>
+const API_URL = "http://localhost:5000/api/orders";
+
+function getCart() {
+  return JSON.parse(localStorage.getItem("cart")) || [];
+}
+
+function getUser() {
+  return JSON.parse(localStorage.getItem("user"));
+}
+
+function renderSummary() {
+  const cart = getCart();
+  const summaryList = document.getElementById("order-summary");
+  const totalElement = document.getElementById("order-total");
+
+  summaryList.innerHTML = "";
+  let total = 0;
+
+  cart.forEach(item => {
+    total += item.price * item.quantity;
+
+    const li = document.createElement("li");
+    li.textContent = `${item.name} (x${item.quantity}) - R${item.price * item.quantity}`;
+    summaryList.appendChild(li);
+  });
+
+  totalElement.textContent = total.toFixed(2);
+}
+
+async function completeCheckout() {
+  const user = getUser();
+  const cart = getCart();
+
+  if (!user || !user._id) {
+    alert("You must be logged in to place an order.");
+    return;
+  }
+
+  if (cart.length === 0) {
+    alert("Your cart is empty.");
+    return;
+  }
+
+  const shippingAddress = `
+    ${document.getElementById("fullName").value},
+    ${document.getElementById("address").value},
+    ${document.getElementById("city").value},
+    ${document.getElementById("postal").value},
+    ${document.getElementById("country").value}
+  `;
+
+  const totalAmount = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
+  const orderData = {
+    userId: user._id,
+    items: cart.map(item => ({
+      product: item._id,
+      name: item.name,
+      price: item.price,
+      quantity: item.quantity
+    })),
+    totalAmount,
+    shippingAddress
+  };
+
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(orderData)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message || "Order failed");
+      return;
+    }
+
+    // Clear cart
+    localStorage.removeItem("cart");
+
+    // Save order for confirmation page
+    localStorage.setItem("lastOrder", JSON.stringify(data.order));
+
+    // Redirect
+    window.location.href = "order-confirmation.html";
+
+  } catch (error) {
+    console.error(error);
+    alert("Something went wrong.");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", renderSummary);
+</script>
+
+</body>
+</html>

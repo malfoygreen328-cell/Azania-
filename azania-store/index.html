@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Azania – Discover Unique Fashion</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<style>
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #ffffff;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  padding: 1rem 2rem;
+  background-color: #043927;
+  color: #fff;
+}
+
+.logo {
+   position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.nav-section.right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+
+.nav-links {
+list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.hero {
+  background: url('Hme.jpg') no-repeat center center/cover;
+  margin-bottom: 0%;
+  padding-bottom: 0%;
+  height: 90vh;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding-left: 5%;
+}
+
+.hero-content {
+  max-width: 400px;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.hero p {
+  margin: 1rem 0;
+  font-size: 1.1rem;
+}
+
+.btn {
+  background-color: #e94f37;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 4px;
+}
+.nav-btn {
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 6px 12px;
+  margin-left: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+}
+
+.nav-btn:hover {
+  background-color: white;
+  color: #043927;
+}
+.footer {
+  background-color: #043927;
+  color: white;
+  padding: 3rem 2rem 1.2rem;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.footer-column h3,
+.footer-column h4 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.footer-column p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 0.6rem;
+}
+
+.footer-column ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+  color: #e94f37;
+}
+
+.social-icons a {
+  display: inline-block;
+  margin-right: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: #e94f37;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 1rem;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+</style>
+<body>
+  
+  <nav class="navbar">
+  <div class="nav-section left"></div>
+
+  <div class="logo">
+    <img src="A.jpg" alt="Azania" width="60px" />
+  </div>
+
+  <div class="nav-section right">
+    <button class="nav-btn"><a href="login.html">Login</a></button>
+    <i class="fas fa-search"></i>
+    <i class="fas fa-user"></i>
+    <div class="cart-icon">
+      <i class="fas fa-shopping-cart"></i>
+      <span class="cart-count" id="cart-count"></span>
+    </div>
+  </div>
+</nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <h1>DISCOVER UNIQUE FASHION</h1>
+      <p>Explore the latest trends from local brands</p>
+      <a href="Sign up.html" class="btn">SHOP NOW</a>
+    </div>
+  </header>
+  <footer class="footer">
+  <div class="footer-container">
+
+    <!-- Brand Section -->
+    <div class="footer-column">
+      <h3>Azania Marketplace</h3>
+      <p>
+        Discover unique fashion from local brands.<br>
+        Shop authentic, shop Azania.
+      </p>
+    </div>
+
+    <!-- Support Section -->
+    <div class="footer-column">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms & Conditions</a></li>
+      </ul>
+    </div>
+
+    <!-- Social Media Section -->
+    <div class="footer-column">
+      <h4>Follow Us</h4>
+      <div class="social-icons">
+        <a href="#">Facebook</a>
+        <a href="#">Instagram</a>
+        <a href="#">Twitter</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>© <span id="year"></span> Azania Marketplace. All rights reserved.</p>
+  </div>
+</footer>
+
+
+</body>
+<script>
+  // Set current year in footer
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</html>
